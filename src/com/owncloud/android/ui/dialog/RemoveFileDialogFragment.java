@@ -107,34 +107,6 @@ implements ConfirmationDialogFragmentListener {
     public void onNeutral(String callerTag) {
         ComponentsGetter cg = (ComponentsGetter)getActivity();
         cg.getFileOperationsHelper().removeFile(mTargetFile, true);
-        
-        FileDataStorageManager storageManager = cg.getStorageManager();
-        
-        boolean containsKeepInSync = false;
-        if (mTargetFile.isFolder()) {
-            // TODO Enable when "On Device" is recovered ?
-            Vector<OCFile> files = storageManager.getFolderContent(mTargetFile/*, false*/);
-            for(OCFile file: files) {
-                containsKeepInSync = file.keepInSync() || containsKeepInSync;
-
-                if (containsKeepInSync)
-                    break;
-            }
-        }
-
-        // Remove etag for parent, if file is a keep_in_sync 
-        // or is a folder and contains keep_in_sync        
-        if (mTargetFile.keepInSync() || containsKeepInSync) {
-            OCFile folder = null;
-            if (mTargetFile.isFolder()) {
-                folder = mTargetFile;
-            } else {
-                folder = storageManager.getFileById(mTargetFile.getParentId());
-            }
-            
-           folder.setEtag("");
-           storageManager.saveFile(folder);
-        }
     }
 
     @Override
