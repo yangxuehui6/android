@@ -45,6 +45,8 @@ import com.owncloud.android.ui.adapter.FileListListAdapter;
 
 import third_parties.in.srain.cube.GridViewWithHeaderAndFooter;
 
+import java.util.ArrayList;
+
 /**
  * TODO extending SherlockListFragment instead of SherlockFragment
  */
@@ -55,7 +57,7 @@ public class ExtendedListFragment extends Fragment
 
     private static final String KEY_SAVED_LIST_POSITION = "SAVED_LIST_POSITION";
     private static final String KEY_INDEXES = "INDEXES";
-    private static final String KEY_FIRST_POSITIONS= "FIRST_POSITIONS";
+    private static final String KEY_FIRST_POSITIONS = "FIRST_POSITIONS";
     private static final String KEY_TOPS = "TOPS";
     private static final String KEY_HEIGHT_CELL = "HEIGHT_CELL";
     private static final String KEY_EMPTY_LIST_MESSAGE = "EMPTY_LIST_MESSAGE";
@@ -64,7 +66,7 @@ public class ExtendedListFragment extends Fragment
     private SwipeRefreshLayout mRefreshGridLayout;
     private SwipeRefreshLayout mRefreshEmptyLayout;
     private TextView mEmptyListMessage;
-    
+
     // Save the state of the scroll in browsing
     private ArrayList<Integer> mIndexes;
     private ArrayList<Integer> mFirstPositions;
@@ -72,7 +74,7 @@ public class ExtendedListFragment extends Fragment
     private int mHeightCell = 0;
 
     private OnEnforceableRefreshListener mOnRefreshListener = null;
-    
+
     protected AbsListView mCurrentListView;
     private ExtendedListView mListView;
     private View mListFooterView;
@@ -156,10 +158,12 @@ public class ExtendedListFragment extends Fragment
             }
         }
 
+
         // Pull-down to refresh layout
         mRefreshListLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_containing_list);
         mRefreshGridLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_containing_grid);
         mRefreshEmptyLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_containing_empty);
+
         mEmptyListMessage = (TextView) v.findViewById(R.id.empty_list_view);
         
         onCreateSwipeToRefresh(mRefreshListLayout);
@@ -180,23 +184,23 @@ public class ExtendedListFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
+
         if (savedInstanceState != null) {
             mIndexes = savedInstanceState.getIntegerArrayList(KEY_INDEXES);
             mFirstPositions = savedInstanceState.getIntegerArrayList(KEY_FIRST_POSITIONS);
             mTops = savedInstanceState.getIntegerArrayList(KEY_TOPS);
             mHeightCell = savedInstanceState.getInt(KEY_HEIGHT_CELL);
             setMessageForEmptyList(savedInstanceState.getString(KEY_EMPTY_LIST_MESSAGE));
-            
+
         } else {
             mIndexes = new ArrayList<Integer>();
             mFirstPositions = new ArrayList<Integer>();
             mTops = new ArrayList<Integer>();
             mHeightCell = 0;
         }
-    }    
-    
-    
+    }
+
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -216,9 +220,9 @@ public class ExtendedListFragment extends Fragment
      * 
      * The current policy is take as a reference the visible item in the center
      * of the screen.
-     * 
+     *
      * @return The position in the list of the visible item in the center of the
-     *         screen.
+     * screen.
      */
     protected int getReferencePosition() {
         if (mCurrentListView != null) {
@@ -229,16 +233,17 @@ public class ExtendedListFragment extends Fragment
         }
     }
 
-
     /*
      * Restore index and position
      */
     protected void restoreIndexAndTopPosition() {
-        if (mIndexes.size() > 0) {  
+        if (mIndexes.size() > 0) {
             // needs to be checked; not every browse-up had a browse-down before 
-            
+
             int index = mIndexes.remove(mIndexes.size() - 1);
+
             final int firstPosition = mFirstPositions.remove(mFirstPositions.size() -1);
+
             int top = mTops.remove(mTops.size() - 1);
 
             Log_OC.v(TAG, "Setting selection to position: " + firstPosition + "; top: "
@@ -263,12 +268,12 @@ public class ExtendedListFragment extends Fragment
 
         }
     }
-    
+
     /*
      * Save index and top position
      */
     protected void saveIndexAndTopPosition(int index) {
-        
+
         mIndexes.add(index);
         
         int firstPosition = mCurrentListView.getFirstVisiblePosition();
@@ -278,14 +283,14 @@ public class ExtendedListFragment extends Fragment
         int top = (view == null) ? 0 : view.getTop() ;
 
         mTops.add(top);
-        
+
         // Save the height of a cell
         mHeightCell = (view == null || mHeightCell != 0) ? mHeightCell : view.getHeight();
     }
-    
-    
+
+
     @Override
-    public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // to be @overriden
     }
 
@@ -299,10 +304,11 @@ public class ExtendedListFragment extends Fragment
             mOnRefreshListener.onRefresh();
         }
     }
+
     public void setOnRefreshListener(OnEnforceableRefreshListener listener) {
         mOnRefreshListener = listener;
     }
-    
+
 
     /**
      * Disables swipe gesture.
@@ -330,7 +336,7 @@ public class ExtendedListFragment extends Fragment
 
     /**
      * Get the text of EmptyListMessage TextView
-     * 
+     *
      * @return String
      */
     public String getEmptyViewText() {
@@ -352,7 +358,7 @@ public class ExtendedListFragment extends Fragment
         mRefreshEmptyLayout.setRefreshing(false);
 
         if (mOnRefreshListener != null) {
-            mOnRefreshListener.onRefresh(ignoreETag);
+            mOnRefreshListener.onRefresh();
         }
     }
 

@@ -39,6 +39,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -47,6 +48,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
 import android.widget.Toast;
 
 import com.owncloud.android.BuildConfig;
@@ -105,6 +107,7 @@ public class FileActivity extends ActionBarActivity
     private static final String KEY_TRY_SHARE_AGAIN = "TRY_SHARE_AGAIN";
     private static final String KEY_ACTION_BAR_TITLE = "ACTION_BAR_TITLE";
 
+
     protected static final long DELAY_TO_REQUEST_OPERATION_ON_ACTIVITY_RESULTS = 200;
 
 
@@ -131,6 +134,7 @@ public class FileActivity extends ActionBarActivity
     private Handler mHandler;
 
     /** Access point to the cached database for the current ownCloud {@link Account} */
+
     private FileDataStorageManager mStorageManager = null;
 
     private FileOperationsHelper mFileOperationsHelper;
@@ -161,11 +165,9 @@ public class FileActivity extends ActionBarActivity
 
     // TODO re-enable when "Accounts" is available in Navigation Drawer
 //    protected boolean mShowAccounts = false;
-
     /**
      * Loads the ownCloud {@link Account} and main {@link OCFile} to be handled by the instance of
      * the {@link FileActivity}.
-     *
      * Grants that a valid ownCloud {@link Account} is associated to the instance, or that the user
      * is requested to create a new one.
      */
@@ -174,6 +176,7 @@ public class FileActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         mHandler = new Handler();
         mFileOperationsHelper = new FileOperationsHelper(this);
+
         Account account = null;
         if(savedInstanceState != null) {
             mFile = savedInstanceState.getParcelable(FileActivity.EXTRA_FILE);
@@ -183,6 +186,7 @@ public class FileActivity extends ActionBarActivity
                     );
             mTryShareAgain = savedInstanceState.getBoolean(KEY_TRY_SHARE_AGAIN);
             getSupportActionBar().setTitle(savedInstanceState.getString(KEY_ACTION_BAR_TITLE));
+
         } else {
             account = getIntent().getParcelableExtra(FileActivity.EXTRA_ACCOUNT);
             mFile = getIntent().getParcelableExtra(FileActivity.EXTRA_FILE);
@@ -209,7 +213,6 @@ public class FileActivity extends ActionBarActivity
             bindService(new Intent(this, FileUploader.class), mUploadServiceConnection,
                     Context.BIND_AUTO_CREATE);
         }
-
     }
 
     @Override
@@ -473,7 +476,7 @@ public class FileActivity extends ActionBarActivity
      */
     private void swapToDefaultAccount() {
         // default to the most recently used account
-        Account newAccount  = AccountUtils.getCurrentOwnCloudAccount(getApplicationContext());
+        Account newAccount = AccountUtils.getCurrentOwnCloudAccount(getApplicationContext());
         if (newAccount == null) {
             /// no account available: force account creation
             createFirstAccount();
@@ -561,7 +564,7 @@ public class FileActivity extends ActionBarActivity
     }
 
     /**
-     * @return  'True' when the Activity is finishing to enforce the setup of a new account.
+     * @return 'True' when the Activity is finishing to enforce the setup of a new account.
      */
     protected boolean isRedirectingToSetupAccount() {
         return mRedirectingToSetupAccount;
@@ -799,7 +802,6 @@ public class FileActivity extends ActionBarActivity
         }
     }
 
-
     /**
      * Show loading dialog
      */
@@ -816,7 +818,7 @@ public class FileActivity extends ActionBarActivity
     /**
      * Dismiss loading dialog
      */
-    public void dismissLoadingDialog(){
+    public void dismissLoadingDialog() {
         Fragment frag = getSupportFragmentManager().findFragmentByTag(DIALOG_WAIT_TAG);
         if (frag != null) {
             LoadingDialog loading = (LoadingDialog) frag;
