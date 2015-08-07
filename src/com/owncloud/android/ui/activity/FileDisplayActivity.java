@@ -483,6 +483,7 @@ public class FileDisplayActivity extends HookActivity
             case R.id.action_create_dir: {
                 CreateFolderDialogFragment dialog =
                         CreateFolderDialogFragment.newInstance(getCurrentDir());
+                dialog.show(getSupportFragmentManager(), DIALOG_CREATE_FOLDER);
                 break;
             }
             case R.id.action_sync_account: {
